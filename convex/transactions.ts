@@ -19,8 +19,13 @@ export const create = mutation({
 		remarks: v.string(), // Remarks for the transaction
 		type: v.union(v.literal("income"), v.literal("expense")), // Type of transaction
 		categoryId: v.id("categories"), // ID of the category
+		category: v.optional(v.string())
 	},
 	handler: async (ctx, args) => {
+		const category = await ctx.db
+			.query("categories")
+			.filter((q) => q.eq(q.field("_id"), args.categoryId))
+			.first();
 		// Insert the new transaction into the database
 		const transactionId = await ctx.db.insert("transactions", {
 			date: args.date,
@@ -28,13 +33,11 @@ export const create = mutation({
 			remarks: args.remarks,
 			type: args.type,
 			categoryId: args.categoryId,
+			category: category?.title,
 		});
 
 		// Fetch the category associated with the transaction
-		const category = await ctx.db
-			.query("categories")
-			.filter((q) => q.eq(q.field("_id"), args.categoryId))
-			.first();
+		
 
 		// Fetch the dashboard data
 		const dashboard = await ctx.db.query("dashboard").first();

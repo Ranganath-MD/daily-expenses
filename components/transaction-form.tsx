@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
 	Select,
 	SelectContent,
@@ -14,7 +13,6 @@ import {
 	Drawer,
 	DrawerClose,
 	DrawerContent,
-	DrawerDescription,
 	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
@@ -23,12 +21,11 @@ import {
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { FormEvent, SyntheticEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { PlusIcon } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -40,14 +37,14 @@ import { toast } from "sonner";
 export const Form: React.FC<{
 	mode: string;
 	handleMode: (value: string) => void;
-	onSubmit: any;
+	onSubmit: (e: any) => void;
 	onChange: any;
 	formData: any;
 	handleSelect: any;
 	handleDate: any;
 }> = ({
-	mode,
-	handleMode,
+	// mode,
+	// handleMode,
 	onSubmit,
 	onChange,
 	formData,
@@ -153,27 +150,27 @@ const initialValue = {
 
 export function ExpenseFormPortal() {
 	const createTransaction = useMutation(api.transactions.create);
-	const [mode, setMode] = useState("expense");
+	// const [mode, setMode] = useState("expense");
 	const [formData, setFormData] = useState(initialValue);
 
 	const [open, setOpen] = useState(false);
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
-	const handleSetInputs = (e) => {
+	const handleSetInputs = (e: any) => {
 		setFormData((prev) => ({
 			...prev,
 			[e.target.name]: e.target.value,
 		}));
 	};
 
-	const handleDate = (value) =>
+	const handleDate = (value: Date) =>
 		setFormData((prev) => ({ ...prev, date: value }));
-	const handleSelect = (value) =>
+	const handleSelect = (value: string) =>
 		setFormData((prev) => ({ ...prev, category: value }));
 
 	const handleMode = (value: string) => {
 		if (!value) return;
-		setMode(value);
+		// setMode(value);
 	};
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -191,9 +188,9 @@ export function ExpenseFormPortal() {
 		try {
 			await createTransaction(payload);
 			setOpen(false);
-			setFormData(initialValue)
+			setFormData(initialValue);
 		} catch (err) {
-			const error = err as ConvexError<{ message: string }>
+			const error = err as ConvexError<{ message: string }>;
 			toast.error(error.data.message, {
 				position: isDesktop ? "bottom-right" : "bottom-center",
 			});
@@ -218,7 +215,7 @@ export function ExpenseFormPortal() {
 						</DialogTitle>
 					</DialogHeader>
 					<Form
-						mode={mode}
+						mode={"expense"}
 						handleMode={handleMode}
 						onSubmit={onSubmit}
 						onChange={handleSetInputs}
@@ -245,7 +242,7 @@ export function ExpenseFormPortal() {
 					</DrawerTitle>
 				</DrawerHeader>
 				<Form
-					mode={mode}
+					mode={"expense"}
 					handleMode={handleMode}
 					onSubmit={onSubmit}
 					onChange={handleSetInputs}

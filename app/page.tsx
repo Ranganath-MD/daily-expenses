@@ -4,10 +4,9 @@ import { AnalyticsTrackerCards } from "@/components/analytics-cards";
 import { ITransaction, TrackerTable } from "@/components/tracker-table";
 import { ExpenseFormPortal } from "@/components/transaction-form";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { FilterIcon, PlusIcon } from "lucide-react";
+import { FilterIcon } from "lucide-react";
 
 export default function Home() {
 	const dashboardData = useQuery(api.dashboard.get);

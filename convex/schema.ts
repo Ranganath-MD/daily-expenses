@@ -13,6 +13,7 @@ export default defineSchema({
 		remarks: v.string(),
 		type: v.union(v.literal("income"), v.literal("expense")),
 		categoryId: v.id("categories"),
+		category: v.optional(v.string()),
 	}),
 	dashboard: defineTable({
 		balance: v.float64(),

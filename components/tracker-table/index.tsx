@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	ColumnDef,
 	createColumnHelper,
 	flexRender,
 	getCoreRowModel,
@@ -28,6 +27,7 @@ export interface ITransaction {
 	remarks: string;
 	type: string;
 	categoryId: string;
+	category: string;
 }
 
 interface ITableProps {
@@ -67,7 +67,7 @@ const defaultColumns = [
 		},
 		header: () => <div className="font-bold">Expense</div>,
 	}),
-	columnHelper.accessor("categoryId", {
+	columnHelper.accessor("category", {
 		maxSize: 100,
 		cell: (row) => <div>{row.getValue()}</div>,
 		header: () => <div className="font-bold">Category</div>,
