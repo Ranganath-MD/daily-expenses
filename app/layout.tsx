@@ -5,6 +5,14 @@ import { ConvexClientProvider } from "./convex-client-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Layout } from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner";
+import {
+	ClerkProvider,
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+} from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -27,22 +35,24 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
+		<ClerkProvider appearance={{ baseTheme: dark }}>
+			<html lang="en" suppressHydrationWarning>
+				<body
+					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				>
-					<Layout>
-						<ConvexClientProvider>{children}</ConvexClientProvider>
-						<Toaster richColors />
-					</Layout>
-				</ThemeProvider>
-			</body>
-		</html>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<Layout>
+							<ConvexClientProvider>{children}</ConvexClientProvider>
+							<Toaster richColors />
+						</Layout>
+					</ThemeProvider>
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }
