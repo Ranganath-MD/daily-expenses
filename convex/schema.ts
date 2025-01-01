@@ -8,7 +8,6 @@ export default defineSchema({
 		transactionIds: v.optional(v.array(v.id("transactions"))),
 	}),
 	transactions: defineTable({
-		balance: v.float64(),
 		date: v.string(),
 		expense: v.float64(),
 		remarks: v.string(),

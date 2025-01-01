@@ -14,7 +14,6 @@ export const get = query({
 // Mutation to create a new transaction
 export const create = mutation({
 	args: {
-		balance: v.float64(), // Balance after the transaction
 		date: v.string(), // Date of the transaction
 		expense: v.float64(), // Expense amount
 		remarks: v.string(), // Remarks for the transaction
@@ -24,23 +23,22 @@ export const create = mutation({
 	handler: async (ctx, args) => {
 		// Insert the new transaction into the database
 		const transactionId = await ctx.db.insert("transactions", {
-			balance: args.balance,
 			date: args.date,
 			expense: args.expense,
 			remarks: args.remarks,
 			type: args.type,
 			categoryId: args.categoryId,
-			});
-		
+		});
+
 		// Fetch the category associated with the transaction
 		const category = await ctx.db
 			.query("categories")
 			.filter((q) => q.eq(q.field("_id"), args.categoryId))
 			.first();
-		
+
 		// Fetch the dashboard data
 		const dashboard = await ctx.db.query("dashboard").first();
-		
+
 		// Update the dashboard if it exists
 		if (dashboard) {
 			if (dashboard.balance <= 0) {
@@ -53,7 +51,7 @@ export const create = mutation({
 				expense: dashboard.expense + args.expense,
 			});
 		}
-		
+
 		// Update the category with the new transaction ID
 		if (category) {
 			await ctx.db.patch(category._id, {
