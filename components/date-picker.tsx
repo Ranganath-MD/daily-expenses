@@ -13,8 +13,8 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker({ date, onSelect }) {
-	const setDate = (val) => {
+export function DatePicker({ date, onSelect }: any) {
+	const setDate = (val: Date) => {
 		onSelect?.(val)
 	}
   
@@ -36,7 +36,7 @@ export function DatePicker({ date, onSelect }) {
 				<Calendar
 					mode="single"
 					selected={date}
-					onSelect={(val) => setDate(val)}
+					onSelect={(val) => setDate(val as any)}
           initialFocus
 				/>
 			</PopoverContent>
